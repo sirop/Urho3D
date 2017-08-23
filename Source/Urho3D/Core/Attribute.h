@@ -68,7 +68,6 @@ struct AttributeInfo
     AttributeInfo() :
         type_(VAR_NONE),
         enumNames_(0),
-        variantStructureElementNames_(0),
         mode_(AM_DEFAULT),
         ptr_(0)
     {
@@ -79,7 +78,6 @@ struct AttributeInfo
         type_(type),
         name_(name),
         enumNames_(0),
-        variantStructureElementNames_(0),
         defaultValue_(defaultValue),
         mode_(mode),
         ptr_(0)
@@ -91,7 +89,6 @@ struct AttributeInfo
         type_(VAR_INT),
         name_(name),
         enumNames_(enumNames),
-        variantStructureElementNames_(0),
         defaultValue_(defaultValue),
         mode_(mode),
         ptr_(0)
@@ -103,7 +100,6 @@ struct AttributeInfo
         type_(type),
         name_(name),
         enumNames_(0),
-        variantStructureElementNames_(0),
         accessor_(accessor),
         defaultValue_(defaultValue),
         mode_(mode),
@@ -117,20 +113,6 @@ struct AttributeInfo
         type_(VAR_INT),
         name_(name),
         enumNames_(enumNames),
-        variantStructureElementNames_(0),
-        accessor_(accessor),
-        defaultValue_(defaultValue),
-        mode_(mode),
-        ptr_(0)
-    {
-    }
-
-    /// Construct variant structure (structure, which packed to VariantVector) attribute.
-    AttributeInfo(VariantType type, const char* name, AttributeAccessor* accessor, const Variant& defaultValue, const char** variantStructureElementNames, unsigned mode) :
-        type_(type),
-        name_(name),
-        enumNames_(0),
-        variantStructureElementNames_(variantStructureElementNames),
         accessor_(accessor),
         defaultValue_(defaultValue),
         mode_(mode),
@@ -157,8 +139,6 @@ struct AttributeInfo
     String name_;
     /// Enum names.
     const char** enumNames_;
-    /// Variant structure elements names.
-    const char** variantStructureElementNames_;
     /// Helper object for accessor mode.
     SharedPtr<AttributeAccessor> accessor_;
     /// Default value for network replication.
