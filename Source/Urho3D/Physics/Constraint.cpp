@@ -50,8 +50,13 @@ static const char* typeNames[] =
     0
 };
 
-static const StringHash TAG_POSITION = "Position";
-static const StringHash TAG_RECREATE_CONSTRAINT = "Recreate Constraint";
+namespace AttributeMetadata
+{
+    /// Attribute is constraint position. bool.
+    static const StringHash P_CONSTRAINT_POSITION = "ConstraintPosition";
+    /// Attribute change causes constraint recreation. bool.
+    static const StringHash P_CONSTRAINT_RECREATE = "ConstraintRecreate";
+}
 
 extern const char* PHYSICS_CATEGORY;
 
@@ -88,20 +93,20 @@ void Constraint::RegisterObject(Context* context)
 
     URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, AM_DEFAULT);
     URHO3D_ENUM_ATTRIBUTE("Constraint Type", constraintType_, typeNames, CONSTRAINT_POINT, AM_DEFAULT)
-        .SetMetadata(TAG_RECREATE_CONSTRAINT, true);
+        .SetMetadata(AttributeMetadata::P_CONSTRAINT_RECREATE, true);
     URHO3D_ATTRIBUTE("Position", Vector3, position_, Vector3::ZERO, AM_DEFAULT)
-        .SetMetadata(TAG_POSITION, true);
+        .SetMetadata(AttributeMetadata::P_CONSTRAINT_POSITION, true);
     URHO3D_ATTRIBUTE("Rotation", Quaternion, rotation_, Quaternion::IDENTITY, AM_DEFAULT);
     URHO3D_ATTRIBUTE("Other Body Position", Vector3, otherPosition_, Vector3::ZERO, AM_DEFAULT);
     URHO3D_ATTRIBUTE("Other Body Rotation", Quaternion, otherRotation_, Quaternion::IDENTITY, AM_DEFAULT);
     URHO3D_ATTRIBUTE("Other Body NodeID", unsigned, otherBodyNodeID_, 0, AM_DEFAULT | AM_NODEID)
-        .SetMetadata(TAG_RECREATE_CONSTRAINT, true);
+        .SetMetadata(AttributeMetadata::P_CONSTRAINT_RECREATE, true);
     URHO3D_ACCESSOR_ATTRIBUTE("High Limit", GetHighLimit, SetHighLimit, Vector2, Vector2::ZERO, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE("Low Limit", GetLowLimit, SetLowLimit, Vector2, Vector2::ZERO, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE("ERP Parameter", GetERP, SetERP, float, 0.0f, AM_DEFAULT);
     URHO3D_ACCESSOR_ATTRIBUTE("CFM Parameter", GetCFM, SetCFM, float, 0.0f, AM_DEFAULT);
     URHO3D_ATTRIBUTE("Disable Collision", bool, disableCollision_, false, AM_DEFAULT)
-        .SetMetadata(TAG_RECREATE_CONSTRAINT, true);
+        .SetMetadata(AttributeMetadata::P_CONSTRAINT_RECREATE, true);
 }
 
 void Constraint::OnSetAttribute(const AttributeInfo& attr, const Variant& src)
@@ -111,7 +116,7 @@ void Constraint::OnSetAttribute(const AttributeInfo& attr, const Variant& src)
     // Convenience for editing static constraints: if not connected to another body, adjust world position to match local
     // (when deserializing, the proper other body position will be read after own position, so this calculation is safely
     // overridden and does not accumulate constraint error
-    if (attr.GetMetadata<bool>(TAG_POSITION) && constraint_ && !otherBody_)
+    if (attr.GetMetadata<bool>(AttributeMetadata::P_CONSTRAINT_POSITION) && constraint_ && !otherBody_)
     {
         btTransform ownBody = constraint_->getRigidBodyA().getWorldTransform();
         btVector3 worldPos = ownBody * ToBtVector3(position_ * cachedWorldScale_ - ownBody_->GetCenterOfMass());
@@ -119,7 +124,7 @@ void Constraint::OnSetAttribute(const AttributeInfo& attr, const Variant& src)
     }
 
     // Certain attribute changes require recreation of the constraint
-    if (attr.GetMetadata<bool>(TAG_RECREATE_CONSTRAINT))
+    if (attr.GetMetadata<bool>(AttributeMetadata::P_CONSTRAINT_RECREATE))
         recreateConstraint_ = true;
     else
         framesDirty_ = true;
