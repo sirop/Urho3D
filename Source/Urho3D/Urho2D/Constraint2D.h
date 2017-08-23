@@ -65,7 +65,6 @@ public:
 
     /// Return owner body.
     RigidBody2D* GetOwnerBody() const { return ownerBody_; }
-
     /// Return other body.
     RigidBody2D* GetOtherBody() const { return otherBody_; }
     /// Return other body node ID.
@@ -74,7 +73,6 @@ public:
     bool GetCollideConnected() const { return collideConnected_; }
     /// Return attached constraint (for gear).
     Constraint2D* GetAttachedConstraint() const { return attachedConstraint_; }
-
     /// Return Box2D joint.
     b2Joint* GetJoint() const { return joint_; }
 

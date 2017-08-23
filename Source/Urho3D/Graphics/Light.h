@@ -301,22 +301,16 @@ public:
     float GetShadowFocusQuantize() const { return shadowFocus_.quantize_; }
     /// Return shadow focus minimum view size.
     float GetShadowFocusMinView() const { return shadowFocus_.minView_; }
-
     /// Return light intensity in shadow.
     float GetShadowIntensity() const { return shadowIntensity_; }
-
     /// Return shadow resolution.
     float GetShadowResolution() const { return shadowResolution_; }
-
     /// Return shadow camera near/far clip distance ratio.
     float GetShadowNearFarRatio() const { return shadowNearFarRatio_; }
-
     /// Return maximum shadow extrusion distance for directional lights.
     float GetShadowMaxExtrusion() const { return shadowMaxExtrusion_; }
-
     /// Return range attenuation texture.
     Texture* GetRampTexture() const { return rampTexture_; }
-
     /// Return spotlight attenuation texture.
     Texture* GetShapeTexture() const { return shapeTexture_; }
 

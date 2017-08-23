@@ -99,46 +99,32 @@ public:
 
     /// Return physics world.
     PhysicsWorld* GetPhysicsWorld() const { return physicsWorld_; }
-
     /// Return Bullet constraint.
     btTypedConstraint* GetConstraint() const { return constraint_.Get(); }
-
     /// Return constraint type.
     ConstraintType GetConstraintType() const { return constraintType_; }
-
     /// Return rigid body in own scene node.
     RigidBody* GetOwnBody() const { return ownBody_; }
-
     /// Return the other rigid body. May be null if connected to the static world.
     RigidBody* GetOtherBody() const { return otherBody_; }
-
     /// Return constraint position relative to own body.
     const Vector3& GetPosition() const { return position_; }
-
     /// Return constraint rotation relative to own body.
     const Quaternion& GetRotation() const { return rotation_; }
-
     /// Return constraint position relative to other body.
     const Vector3& GetOtherPosition() const { return otherPosition_; }
-
     /// Return constraint rotation relative to other body.
     const Quaternion& GetOtherRotation() const { return otherRotation_; }
-
     /// Return constraint world position, calculated from own body.
     Vector3 GetWorldPosition() const;
-
     /// Return high limit.
     const Vector2& GetHighLimit() const { return highLimit_; }
-
     /// Return low limit.
     const Vector2& GetLowLimit() const { return lowLimit_; }
-
     /// Return constraint error reduction parameter.
     float GetERP() const { return erp_; }
-
     /// Return constraint force mixing parameter.
     float GetCFM() const { return cfm_; }
-
     /// Return whether collisions between connected bodies are disabled.
     bool GetDisableCollision() const { return disableCollision_; }
 

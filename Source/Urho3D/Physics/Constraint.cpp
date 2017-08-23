@@ -108,24 +108,21 @@ void Constraint::OnSetAttribute(const AttributeInfo& attr, const Variant& src)
 {
     Serializable::OnSetAttribute(attr, src);
 
-    if (!attr.accessor_)
+    // Convenience for editing static constraints: if not connected to another body, adjust world position to match local
+    // (when deserializing, the proper other body position will be read after own position, so this calculation is safely
+    // overridden and does not accumulate constraint error
+    if (attr.GetMetadata<bool>(TAG_POSITION) && constraint_ && !otherBody_)
     {
-        // Convenience for editing static constraints: if not connected to another body, adjust world position to match local
-        // (when deserializing, the proper other body position will be read after own position, so this calculation is safely
-        // overridden and does not accumulate constraint error
-        if (attr.GetMetadata<bool>(TAG_POSITION) && constraint_ && !otherBody_)
-        {
-            btTransform ownBody = constraint_->getRigidBodyA().getWorldTransform();
-            btVector3 worldPos = ownBody * ToBtVector3(position_ * cachedWorldScale_ - ownBody_->GetCenterOfMass());
-            otherPosition_ = ToVector3(worldPos);
-        }
-
-        // Certain attribute changes require recreation of the constraint
-        if (attr.GetMetadata<bool>(TAG_RECREATE_CONSTRAINT))
-            recreateConstraint_ = true;
-        else
-            framesDirty_ = true;
+        btTransform ownBody = constraint_->getRigidBodyA().getWorldTransform();
+        btVector3 worldPos = ownBody * ToBtVector3(position_ * cachedWorldScale_ - ownBody_->GetCenterOfMass());
+        otherPosition_ = ToVector3(worldPos);
     }
+
+    // Certain attribute changes require recreation of the constraint
+    if (attr.GetMetadata<bool>(TAG_RECREATE_CONSTRAINT))
+        recreateConstraint_ = true;
+    else
+        framesDirty_ = true;
 }
 
 void Constraint::ApplyAttributes()
