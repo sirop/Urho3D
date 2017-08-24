@@ -58,7 +58,7 @@ void OffMeshConnection::RegisterObject(Context* context)
     context->RegisterFactory<OffMeshConnection>(NAVIGATION_CATEGORY);
 
     URHO3D_ACCESSOR_ATTRIBUTE("Is Enabled", IsEnabled, SetEnabled, bool, true, AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE("Endpoint NodeID", GetEndPointNodeID, SetEndPointNodeID, unsigned, 0, AM_DEFAULT | AM_NODEID);
+    URHO3D_ACCESSOR_ATTRIBUTE("Endpoint NodeID", GetEndPointNodeID, SetEndPointNodeIDAttr, unsigned, 0, AM_DEFAULT | AM_NODEID);
     URHO3D_ATTRIBUTE("Radius", float, radius_, DEFAULT_RADIUS, AM_DEFAULT);
     URHO3D_ATTRIBUTE("Bidirectional", bool, bidirectional_, true, AM_DEFAULT);
     URHO3D_ATTRIBUTE("Flags Mask", unsigned, mask_, DEFAULT_MASK_FLAG, AM_DEFAULT);
@@ -119,7 +119,7 @@ void OffMeshConnection::SetEndPoint(Node* node)
     MarkNetworkUpdate();
 }
 
-void OffMeshConnection::SetEndPointNodeID(unsigned nodeID)
+void OffMeshConnection::SetEndPointNodeIDAttr(unsigned nodeID)
 {
     endPointID_ = nodeID;
     endPointDirty_ = true;

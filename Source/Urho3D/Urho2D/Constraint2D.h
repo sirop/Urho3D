@@ -57,10 +57,10 @@ public:
     /// Set other rigid body.
     void SetOtherBody(RigidBody2D* body);
     /// Set other rigid body node ID.
-    void SetOtherBodyNodeID(unsigned nodeID);
+    void SetOtherBodyNodeIDAttr(unsigned nodeID);
     /// Set collide connected.
     void SetCollideConnected(bool collideConnected);
-    /// Set attached constriant (for gear).
+    /// Set attached constraint (for gear).
     void SetAttachedConstraint(Constraint2D* constraint);
 
     /// Return owner body.

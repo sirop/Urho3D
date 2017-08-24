@@ -164,6 +164,7 @@ void Zone::SetFogHeightScale(float scale)
 void Zone::SetPriority(int priority)
 {
     priority_ = priority;
+    OnMarkedDirty(node_);
     MarkNetworkUpdate();
 }
 

@@ -55,7 +55,7 @@ Constraint2D::~Constraint2D()
 void Constraint2D::RegisterObject(Context* context)
 {
     URHO3D_ACCESSOR_ATTRIBUTE("Collide Connected", GetCollideConnected, SetCollideConnected, bool, false, AM_DEFAULT);
-    URHO3D_ACCESSOR_ATTRIBUTE("Other Body NodeID", GetOtherBodyNodeID, SetOtherBodyNodeID, unsigned, 0, AM_DEFAULT | AM_NODEID);
+    URHO3D_ACCESSOR_ATTRIBUTE("Other Body NodeID", GetOtherBodyNodeID, SetOtherBodyNodeIDAttr, unsigned, 0, AM_DEFAULT | AM_NODEID);
 }
 
 void Constraint2D::ApplyAttributes()
@@ -132,7 +132,7 @@ void Constraint2D::SetOtherBody(RigidBody2D* body)
     MarkNetworkUpdate();
 }
 
-void Constraint2D::SetOtherBodyNodeID(unsigned nodeID)
+void Constraint2D::SetOtherBodyNodeIDAttr(unsigned nodeID)
 {
     otherBodyNodeID_ = nodeID;
     otherBodyNodeIDDirty_ = true;

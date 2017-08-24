@@ -48,7 +48,7 @@ public:
     /// Set endpoint node.
     void SetEndPoint(Node* node);
     /// Set endpoint node ID.
-    void SetEndPointNodeID(unsigned nodeID);
+    void SetEndPointNodeIDAttr(unsigned nodeID);
     /// Set radius.
     void SetRadius(float radius);
     /// Set bidirectional flag. Default true.

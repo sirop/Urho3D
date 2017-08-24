@@ -57,8 +57,6 @@ public:
     /// Register object factory.
     static void RegisterObject(Context* context);
 
-    /// Handle attribute write access.
-    virtual void OnSetAttribute(const AttributeInfo& attr, const Variant& src);
     /// Apply attribute changes that can not be applied immediately. Called after scene load or a network update.
     virtual void ApplyAttributes();
     /// Handle enabled/disabled state change.
@@ -107,6 +105,8 @@ public:
     RigidBody* GetOwnBody() const { return ownBody_; }
     /// Return the other rigid body. May be null if connected to the static world.
     RigidBody* GetOtherBody() const { return otherBody_; }
+    /// Return the other rigid body node ID.
+    unsigned GetOtherBodyNodeID() const { return otherBodyNodeID_; }
     /// Return constraint position relative to own body.
     const Vector3& GetPosition() const { return position_; }
     /// Return constraint rotation relative to own body.
@@ -127,6 +127,21 @@ public:
     float GetCFM() const { return cfm_; }
     /// Return whether collisions between connected bodies are disabled.
     bool GetDisableCollision() const { return disableCollision_; }
+
+    /// Set constraint type attribute.
+    void SetConstraintTypeAttr(ConstraintType type);
+    /// Set position attribute.
+    void SetPositionAttr(const Vector3& position);
+    /// Set rotation attribute.
+    void SetRotationAttr(const Quaternion& rotation);
+    /// Set other body position attribute.
+    void SetOtherPositionAttr(const Vector3& position);
+    /// Set other body rotation attribute.
+    void SetOtherRotationAttr(const Quaternion& rotation);
+    /// Set other body node ID attribute.
+    void SetOtherBodyNodeIDAttr(unsigned nodeID);
+    /// Set disable collision attribute.
+    void SetDisableCollitionAttr(bool value);
 
     /// Release the constraint.
     void ReleaseConstraint();
