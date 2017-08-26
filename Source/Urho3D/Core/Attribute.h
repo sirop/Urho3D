@@ -60,7 +60,7 @@ using AttributeSetter = void(*)(Serializable& objectRef, const Variant& value);
 struct AttributeInfo
 {
     /// Construct empty.
-    AttributeInfo() = default;
+    AttributeInfo() { }
 
     /// Construct attribute. For internal usage only.
     AttributeInfo(VariantType type, const char* name, const char** enumNames, const Variant& defaultValue, unsigned mode,
