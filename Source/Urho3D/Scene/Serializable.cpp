@@ -46,7 +46,7 @@ static unsigned RemapAttributeIndex(const Vector<AttributeInfo>* attributes, con
     {
         const AttributeInfo& attr = attributes->At(i);
         // Compare the accessor to avoid name string compare
-        if (attr.accessor_.Get() && attr.accessor_.Get() == netAttr.accessor_.Get())
+        if (attr.getter_ && attr.getter_ == netAttr.getter_)
             return i;
     }
 
@@ -66,9 +66,9 @@ Serializable::~Serializable()
 void Serializable::OnSetAttribute(const AttributeInfo& attr, const Variant& src)
 {
     // Check for accessor function mode
-    if (attr.accessor_)
+    if (attr.setter_)
     {
-        attr.accessor_->Set(this, src);
+        attr.setter_(*this, src);
         return;
     }
 
@@ -174,9 +174,9 @@ void Serializable::OnSetAttribute(const AttributeInfo& attr, const Variant& src)
 void Serializable::OnGetAttribute(const AttributeInfo& attr, Variant& dest) const
 {
     // Check for accessor function mode
-    if (attr.accessor_)
+    if (attr.getter_)
     {
-        attr.accessor_->Get(this, dest);
+        attr.getter_(*this, dest);
         return;
     }
 

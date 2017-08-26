@@ -51,72 +51,27 @@ static const unsigned AM_FILEREADONLY = 0x81;
 
 class Serializable;
 
-/// Abstract base class for invoking attribute accessors.
-class URHO3D_API AttributeAccessor : public RefCounted
-{
-public:
-    /// Get the attribute.
-    virtual void Get(const Serializable* ptr, Variant& dest) const = 0;
-    /// Set the attribute.
-    virtual void Set(Serializable* ptr, const Variant& src) = 0;
-};
+/// Attribute getter function prototype.
+using AttributeGetter = void(*)(const Serializable& objectRef, Variant& value);
+/// Attribute setter function prototype.
+using AttributeSetter = void(*)(Serializable& objectRef, const Variant& value);
 
 /// Description of an automatically serializable variable.
 struct AttributeInfo
 {
     /// Construct empty.
-    AttributeInfo() :
-        type_(VAR_NONE),
-        enumNames_(0),
-        mode_(AM_DEFAULT),
-        ptr_(0)
-    {
-    }
+    AttributeInfo() = default;
 
-    /// Construct offset attribute.
-    AttributeInfo(VariantType type, const char* name, size_t offset, const Variant& defaultValue, unsigned mode) :
+    /// Construct attribute. For internal usage only.
+    AttributeInfo(VariantType type, const char* name, const char** enumNames, const Variant& defaultValue, unsigned mode,
+        AttributeGetter getter, AttributeSetter setter) :
         type_(type),
         name_(name),
-        enumNames_(0),
-        defaultValue_(defaultValue),
-        mode_(mode),
-        ptr_(0)
-    {
-    }
-
-    /// Construct offset enum attribute.
-    AttributeInfo(const char* name, size_t offset, const char** enumNames, const Variant& defaultValue, unsigned mode) :
-        type_(VAR_INT),
-        name_(name),
         enumNames_(enumNames),
+        getter_(getter),
+        setter_(setter),
         defaultValue_(defaultValue),
-        mode_(mode),
-        ptr_(0)
-    {
-    }
-
-    /// Construct accessor attribute.
-    AttributeInfo(VariantType type, const char* name, AttributeAccessor* accessor, const Variant& defaultValue, unsigned mode) :
-        type_(type),
-        name_(name),
-        enumNames_(0),
-        accessor_(accessor),
-        defaultValue_(defaultValue),
-        mode_(mode),
-        ptr_(0)
-    {
-    }
-
-    /// Construct accessor enum attribute.
-    AttributeInfo(const char* name, AttributeAccessor* accessor, const char** enumNames, const Variant& defaultValue,
-        unsigned mode) :
-        type_(VAR_INT),
-        name_(name),
-        enumNames_(enumNames),
-        accessor_(accessor),
-        defaultValue_(defaultValue),
-        mode_(mode),
-        ptr_(0)
+        mode_(mode)
     {
     }
 
@@ -134,21 +89,23 @@ struct AttributeInfo
     }
 
     /// Attribute type.
-    VariantType type_;
+    VariantType type_ = VAR_NONE;
     /// Name.
     String name_;
     /// Enum names.
-    const char** enumNames_;
-    /// Helper object for accessor mode.
-    SharedPtr<AttributeAccessor> accessor_;
+    const char** enumNames_ = nullptr;
+    /// Attribute getter.
+    AttributeGetter getter_ = nullptr;
+    /// Attribute setter.
+    AttributeSetter setter_ = nullptr;
     /// Default value for network replication.
     Variant defaultValue_;
     /// Attribute mode: whether to use for serialization, network replication, or both.
-    unsigned mode_;
+    unsigned mode_ = AM_DEFAULT;
     /// Attribute metadata.
     VariantMap metadata_;
     /// Attribute data pointer if elsewhere than in the Serializable.
-    void* ptr_;
+    void* ptr_ = nullptr;
 };
 
 /// Attribute handle returned by Context::RegisterAttribute and used to chain attribute setup calls.
