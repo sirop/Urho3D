@@ -43,16 +43,16 @@ public:
     /// Construct.
     Terrain(Context* context);
     /// Destruct.
-    virtual ~Terrain() override;
+    ~Terrain() override;
     /// Register object factory.
     static void RegisterObject(Context* context);
 
     /// Handle attribute write access.
-    virtual void OnSetAttribute(const AttributeInfo& attr, const Variant& src) override;
+    void OnSetAttribute(const AttributeInfo& attr, const Variant& src) override;
     /// Apply attribute changes that can not be applied immediately. Called after scene load or a network update.
-    virtual void ApplyAttributes() override;
+    void ApplyAttributes() override;
     /// Handle enabled/disabled state change.
-    virtual void OnSetEnabled() override;
+    void OnSetEnabled() override;
 
     /// Set patch quads per side. Must be a power of two.
     void SetPatchSize(int size);
@@ -117,10 +117,10 @@ public:
 
     /// Return maximum number of LOD levels for terrain patches. This can be between 1-4.
     unsigned GetMaxLodLevels() const { return maxLodLevels_; }
-    
+
     /// Return LOD level used for occlusion.
     unsigned GetOcclusionLodLevel() const { return occlusionLodLevel_; }
-    
+
     /// Return whether smoothing is in use.
     bool GetSmoothing() const { return smoothing_; }
 
@@ -145,13 +145,13 @@ public:
 
     /// Return north neighbor terrain.
     Terrain* GetNorthNeighbor() const { return north_; }
-    
+
     /// Return south neighbor terrain.
     Terrain* GetSouthNeighbor() const { return south_; }
-    
+
     /// Return west neighbor terrain.
     Terrain* GetWestNeighbor() const { return west_; }
-    
+
     /// Return east neighbor terrain.
     Terrain* GetEastNeighbor() const { return east_; }
 

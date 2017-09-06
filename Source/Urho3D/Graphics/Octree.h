@@ -167,14 +167,14 @@ public:
     /// Construct.
     Octree(Context* context);
     /// Destruct.
-    virtual ~Octree() override;
+    ~Octree() override;
     /// Register object factory.
     static void RegisterObject(Context* context);
 
     /// Handle attribute change.
-    virtual void OnSetAttribute(const AttributeInfo& attr, const Variant& src) override;
+    void OnSetAttribute(const AttributeInfo& attr, const Variant& src) override;
     /// Visualize the component as debug geometry.
-    virtual void DrawDebugGeometry(DebugRenderer* debug, bool depthTest) override;
+    void DrawDebugGeometry(DebugRenderer* debug, bool depthTest) override;
 
     /// Set size and maximum subdivision levels. If octree is not empty, drawable objects will be temporarily moved to the root.
     void SetSize(const BoundingBox& box, unsigned numLevels);

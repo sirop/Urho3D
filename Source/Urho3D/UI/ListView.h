@@ -47,14 +47,14 @@ public:
     /// Construct.
     ListView(Context* context);
     /// Destruct.
-    virtual ~ListView() override;
+    ~ListView() override;
     /// Register object factory.
     static void RegisterObject(Context* context);
 
     /// React to a key press.
-    virtual void OnKey(int key, int buttons, int qualifiers) override;
+    void OnKey(int key, int buttons, int qualifiers) override;
     /// React to resize.
-    virtual void OnResize(const IntVector2& newSize, const IntVector2& delta) override;
+    void OnResize(const IntVector2& newSize, const IntVector2& delta) override;
 
     /// Add item to the end of the list.
     void AddItem(UIElement* item);
@@ -152,7 +152,7 @@ public:
 
 protected:
     /// Filter implicit attributes in serialization process.
-    virtual bool FilterImplicitAttributes(XMLElement& dest) const override;
+    bool FilterImplicitAttributes(XMLElement& dest) const override;
     /// Update selection effect when selection or focus changes.
     void UpdateSelectionEffect();
 

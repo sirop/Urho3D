@@ -49,7 +49,7 @@ public:
     /// Construct.
     Serializable(Context* context);
     /// Destruct.
-    virtual ~Serializable() override;
+    ~Serializable() override;
 
     /// Handle attribute write access. Default implementation writes to the variable at offset, or invokes the set accessor.
     virtual void OnSetAttribute(const AttributeInfo& attr, const Variant& src);
@@ -161,7 +161,7 @@ public:
     }
 
     /// Invoke getter function.
-    virtual void Get(const Serializable* ptr, Variant& dest) const override
+    void Get(const Serializable* ptr, Variant& dest) const override
     {
         assert(ptr);
         const T* classPtr = static_cast<const T*>(ptr);
@@ -169,7 +169,7 @@ public:
     }
 
     /// Invoke setter function.
-    virtual void Set(Serializable* ptr, const Variant& value) override
+    void Set(Serializable* ptr, const Variant& value) override
     {
         assert(ptr);
         T* classPtr = static_cast<T*>(ptr);
@@ -199,7 +199,7 @@ public:
     }
 
     /// Invoke getter function.
-    virtual void Get(const Serializable* ptr, Variant& dest) const override
+    void Get(const Serializable* ptr, Variant& dest) const override
     {
         assert(ptr);
         const T* classPtr = static_cast<const T*>(ptr);
@@ -207,7 +207,7 @@ public:
     }
 
     /// Invoke setter function.
-    virtual void Set(Serializable* ptr, const Variant& value) override
+    void Set(Serializable* ptr, const Variant& value) override
     {
         assert(ptr);
         T* classPtr = static_cast<T*>(ptr);
@@ -281,7 +281,7 @@ public:
     }
 
     /// Invoke getter function.
-    virtual void Get(const Serializable* ptr, Variant& dest) const override
+    void Get(const Serializable* ptr, Variant& dest) const override
     {
         assert(ptr);
         const T* classPtr = static_cast<const T*>(ptr);
@@ -289,7 +289,7 @@ public:
     }
 
     /// Invoke setter function.
-    virtual void Set(Serializable* ptr, const Variant& value) override
+    void Set(Serializable* ptr, const Variant& value) override
     {
         assert(ptr);
         T* classPtr = static_cast<T*>(ptr);
@@ -319,7 +319,7 @@ public:
     }
 
     /// Invoke getter function.
-    virtual void Get(const Serializable* ptr, Variant& dest) const override
+    void Get(const Serializable* ptr, Variant& dest) const override
     {
         assert(ptr);
         const T* classPtr = static_cast<const T*>(ptr);
@@ -327,7 +327,7 @@ public:
     }
 
     /// Invoke setter function.
-    virtual void Set(Serializable* ptr, const Variant& value) override
+    void Set(Serializable* ptr, const Variant& value) override
     {
         assert(ptr);
         T* classPtr = static_cast<T*>(ptr);
