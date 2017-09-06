@@ -156,8 +156,8 @@ public:
             dataArrays_.Push(vertexData);
             dataArrays_.Push(indexData);
 
-            Vector3* destVertex = reinterpret_cast<Vector3*>(&vertexData[0]);
-            unsigned* destIndex = reinterpret_cast<unsigned*>(&indexData[0]);
+            auto* destVertex = reinterpret_cast<Vector3*>(&vertexData[0]);
+            auto* destIndex = reinterpret_cast<unsigned*>(&indexData[0]);
             unsigned k = 0;
 
             for (unsigned i = 0; i < srcVertices.Size(); ++i)
@@ -352,7 +352,7 @@ HeightfieldData::HeightfieldData(Terrain* terrain, unsigned lodLevel) :
             heightData_ = lodHeightData;
         }
 
-        unsigned points = (unsigned)(size_.x_ * size_.y_);
+        auto points = (unsigned)(size_.x_ * size_.y_);
         float* data = heightData_.Get();
 
         minHeight_ = maxHeight_ = data[0];
@@ -461,7 +461,7 @@ void CollisionShape::DrawDebugGeometry(DebugRenderer* debug, bool depthTest)
     {
         // Use the rigid body's world transform if possible, as it may be different from the rendering transform
         Matrix3x4 worldTransform;
-        RigidBody* body = GetComponent<RigidBody>();
+        auto* body = GetComponent<RigidBody>();
         bool bodyActive = false;
         if (body)
         {
@@ -474,8 +474,8 @@ void CollisionShape::DrawDebugGeometry(DebugRenderer* debug, bool depthTest)
         // Special case code for convex hull: bypass Bullet's own rendering to draw triangles correctly, not just edges
         if (shapeType_ == SHAPE_CONVEXHULL)
         {
-            ConvexData *convexData = static_cast<ConvexData*>(GetGeometryData());
-            RigidBody* body = GetComponent<RigidBody>();
+            auto*convexData = static_cast<ConvexData*>(GetGeometryData());
+            auto* body = GetComponent<RigidBody>();
             Color color = bodyActive ? Color::WHITE : Color::GREEN;
             Matrix3x4 shapeTransform(worldTransform * position_, worldTransform.Rotation() * rotation_, worldTransform.Scale());
 
@@ -501,7 +501,7 @@ void CollisionShape::DrawDebugGeometry(DebugRenderer* debug, bool depthTest)
             // For terrains, undo the height centering performed automatically by Bullet
             if (shapeType_ == SHAPE_TERRAIN && geometry_)
             {
-                HeightfieldData* heightfield = static_cast<HeightfieldData*>(geometry_.Get());
+                auto* heightfield = static_cast<HeightfieldData*>(geometry_.Get());
                 position.y_ += (heightfield->minHeight_ + heightfield->maxHeight_) * 0.5f;
             }
 
@@ -730,7 +730,7 @@ void CollisionShape::SetCustomConvexHull(CustomGeometry* custom, const Vector3& 
 
 void CollisionShape::SetTerrain(unsigned lodLevel)
 {
-    Terrain* terrain = GetComponent<Terrain>();
+    auto* terrain = GetComponent<Terrain>();
     if (!terrain)
     {
         URHO3D_LOGERROR("No terrain component, can not set terrain shape");
@@ -850,7 +850,7 @@ BoundingBox CollisionShape::GetWorldBoundingBox() const
     if (shape_ && node_)
     {
         // Use the rigid body's world transform if possible, as it may be different from the rendering transform
-        RigidBody* body = GetComponent<RigidBody>();
+        auto* body = GetComponent<RigidBody>();
         Matrix3x4 worldTransform = body ? Matrix3x4(body->GetPosition(), body->GetRotation(), node_->GetWorldScale()) :
             node_->GetWorldTransform();
 
@@ -881,7 +881,7 @@ void CollisionShape::NotifyRigidBody(bool updateMass)
             // For terrains, undo the height centering performed automatically by Bullet
             if (shapeType_ == SHAPE_TERRAIN && geometry_)
             {
-                HeightfieldData* heightfield = static_cast<HeightfieldData*>(geometry_.Get());
+                auto* heightfield = static_cast<HeightfieldData*>(geometry_.Get());
                 position.y_ += (heightfield->minHeight_ + heightfield->maxHeight_) * 0.5f;
             }
 
@@ -899,7 +899,7 @@ void CollisionShape::NotifyRigidBody(bool updateMass)
 
 void CollisionShape::SetModelAttr(const ResourceRef& value)
 {
-    ResourceCache* cache = GetSubsystem<ResourceCache>();
+    auto* cache = GetSubsystem<ResourceCache>();
     model_ = cache->GetResource<Model>(value.name_);
     recreateShape_ = true;
     MarkNetworkUpdate();
@@ -998,7 +998,7 @@ void CollisionShape::OnMarkedDirty(Node* node)
 
         case SHAPE_TERRAIN:
             {
-                HeightfieldData* heightfield = static_cast<HeightfieldData*>(geometry_.Get());
+                auto* heightfield = static_cast<HeightfieldData*>(geometry_.Get());
                 shape_->setLocalScaling(ToBtVector3(Vector3(heightfield->spacing_.x_, 1.0f, heightfield->spacing_.z_) *
                                                     newWorldScale * size_));
             }
@@ -1075,11 +1075,11 @@ void CollisionShape::UpdateShape()
             size_ = size_.Abs();
             if (customGeometryID_ && scene)
             {
-                CustomGeometry* custom = dynamic_cast<CustomGeometry*>(scene->GetComponent(customGeometryID_));
+                auto* custom = dynamic_cast<CustomGeometry*>(scene->GetComponent(customGeometryID_));
                 if (custom)
                 {
                     geometry_ = new TriangleMeshData(custom);
-                    TriangleMeshData* triMesh = static_cast<TriangleMeshData*>(geometry_.Get());
+                    auto* triMesh = static_cast<TriangleMeshData*>(geometry_.Get());
                     shape_ = new btScaledBvhTriangleMeshShape(triMesh->shape_.Get(), ToBtVector3(newWorldScale * size_));
                 }
                 else
@@ -1102,7 +1102,7 @@ void CollisionShape::UpdateShape()
                         cache[id] = geometry_;
                 }
 
-                TriangleMeshData* triMesh = static_cast<TriangleMeshData*>(geometry_.Get());
+                auto* triMesh = static_cast<TriangleMeshData*>(geometry_.Get());
                 shape_ = new btScaledBvhTriangleMeshShape(triMesh->shape_.Get(), ToBtVector3(newWorldScale * size_));
                 // Watch for live reloads of the collision model to reload the geometry if necessary
                 SubscribeToEvent(model_, E_RELOADFINISHED, URHO3D_HANDLER(CollisionShape, HandleModelReloadFinished));
@@ -1113,11 +1113,11 @@ void CollisionShape::UpdateShape()
             size_ = size_.Abs();
             if (customGeometryID_ && scene)
             {
-                CustomGeometry* custom = dynamic_cast<CustomGeometry*>(scene->GetComponent(customGeometryID_));
+                auto* custom = dynamic_cast<CustomGeometry*>(scene->GetComponent(customGeometryID_));
                 if (custom)
                 {
                     geometry_ = new ConvexData(custom);
-                    ConvexData* convex = static_cast<ConvexData*>(geometry_.Get());
+                    auto* convex = static_cast<ConvexData*>(geometry_.Get());
                     shape_ = new btConvexHullShape((btScalar*)convex->vertexData_.Get(), convex->vertexCount_, sizeof(Vector3));
                     shape_->setLocalScaling(ToBtVector3(newWorldScale * size_));
                 }
@@ -1141,7 +1141,7 @@ void CollisionShape::UpdateShape()
                         cache[id] = geometry_;
                 }
 
-                ConvexData* convex = static_cast<ConvexData*>(geometry_.Get());
+                auto* convex = static_cast<ConvexData*>(geometry_.Get());
                 shape_ = new btConvexHullShape((btScalar*)convex->vertexData_.Get(), convex->vertexCount_, sizeof(Vector3));
                 shape_->setLocalScaling(ToBtVector3(newWorldScale * size_));
                 SubscribeToEvent(model_, E_RELOADFINISHED, URHO3D_HANDLER(CollisionShape, HandleModelReloadFinished));
@@ -1151,11 +1151,11 @@ void CollisionShape::UpdateShape()
         case SHAPE_TERRAIN:
             size_ = size_.Abs();
             {
-                Terrain* terrain = GetComponent<Terrain>();
+                auto* terrain = GetComponent<Terrain>();
                 if (terrain && terrain->GetHeightData())
                 {
                     geometry_ = new HeightfieldData(terrain, lodLevel_);
-                    HeightfieldData* heightfield = static_cast<HeightfieldData*>(geometry_.Get());
+                    auto* heightfield = static_cast<HeightfieldData*>(geometry_.Get());
 
                     shape_ =
                         new btHeightfieldTerrainShape(heightfield->size_.x_, heightfield->size_.y_, heightfield->heightData_.Get(),
