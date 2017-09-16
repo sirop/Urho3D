@@ -182,7 +182,7 @@ private:
 
 public:
     /// Construct empty.
-    CustomVariantValue() : typeInfo_(typeid(void)) { }
+    CustomVariantValue() : typeInfo_(typeid(const void)) { }
     /// Destruct.
     virtual ~CustomVariantValue() { }
     /// Get the type info.
