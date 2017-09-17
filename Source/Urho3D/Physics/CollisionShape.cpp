@@ -212,9 +212,7 @@ TriangleMeshData::TriangleMeshData(CustomGeometry* custom)
     btGenerateInternalEdgeInfo(shape_.Get(), infoMap_.Get());
 }
 
-TriangleMeshData::~TriangleMeshData()
-{
-}
+TriangleMeshData::~TriangleMeshData() = default;
 
 ConvexData::ConvexData(Model* model, unsigned lodLevel)
 {
@@ -306,9 +304,7 @@ void ConvexData::BuildHull(const PODVector<Vector3>& vertices)
     }
 }
 
-ConvexData::~ConvexData()
-{
-}
+ConvexData::~ConvexData() = default;
 
 HeightfieldData::HeightfieldData(Terrain* terrain, unsigned lodLevel) :
     heightData_(terrain->GetHeightData()),
@@ -364,9 +360,7 @@ HeightfieldData::HeightfieldData(Terrain* terrain, unsigned lodLevel) :
     }
 }
 
-HeightfieldData::~HeightfieldData()
-{
-}
+HeightfieldData::~HeightfieldData() = default;
 
 bool HasDynamicBuffers(Model* model, unsigned lodLevel)
 {
