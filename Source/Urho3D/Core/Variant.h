@@ -87,9 +87,7 @@ using VariantMap = HashMap<StringHash, Variant>;
 struct URHO3D_API ResourceRef
 {
     /// Construct.
-    ResourceRef()
-    {
-    }
+    ResourceRef() = default;
 
     /// Construct with type only and empty id.
     ResourceRef(StringHash type) :
@@ -119,11 +117,7 @@ struct URHO3D_API ResourceRef
     }
 
     /// Construct from another ResourceRef.
-    ResourceRef(const ResourceRef& rhs) :
-        type_(rhs.type_),
-        name_(rhs.name_)
-    {
-    }
+    ResourceRef(const ResourceRef& rhs) = default;
 
     /// Object type.
     StringHash type_;
@@ -141,9 +135,7 @@ struct URHO3D_API ResourceRef
 struct URHO3D_API ResourceRefList
 {
     /// Construct.
-    ResourceRefList()
-    {
-    }
+    ResourceRefList() = default;
 
     /// Construct with type only.
     ResourceRefList(StringHash type) :
@@ -184,7 +176,8 @@ public:
     /// Construct empty.
     CustomVariantValue() : typeInfo_(typeid(const void)) { }
     /// Destruct.
-    virtual ~CustomVariantValue() { }
+    virtual ~CustomVariantValue() = default;
+
     /// Get the type info.
     const std::type_info& GetTypeInfo() const { return typeInfo_; }
     /// Return whether the specified type is stored.
@@ -316,11 +309,11 @@ union VariantValue
     CustomVariantValue customValueStack_;
 
     /// Construct uninitialized.
-    VariantValue() { }
+    VariantValue() { };
     /// Non-copyable.
     VariantValue(const VariantValue& value) = delete;
     /// Destruct.
-    ~VariantValue() { }
+    ~VariantValue() { };
 };
 
 static_assert(sizeof(VariantValue) == VARIANT_VALUE_SIZE, "Unexpected size of VariantValue");
@@ -330,7 +323,7 @@ class URHO3D_API Variant
 {
 public:
     /// Construct empty.
-    Variant() { }
+    Variant() = default;;
 
     /// Construct from integer.
     Variant(int value)
